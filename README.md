@@ -82,7 +82,8 @@ Branches: `main`, `develop`, `feature/*`, `fix/*`. Open PRs; `.github/workflows/
 1. Push to GitHub; confirm CI is green.
 2. Import the repo in Vercel (framework: Next.js, defaults).
 3. Project → Settings → Environment Variables: `DATABASE_URL` (Neon pooled string), `SESSION_SECRET`. Do not set `ADMIN_*` unless seeding.
-4. Run migrations/seed against Neon **from your machine**: `DATABASE_URL=<neon> npm run db:migrate && npm run db:seed`.
+4. Migrations run automatically on every deploy (`vercel-build` script). To create the admin and demo data once, also set `ADMIN_USERNAME`, `ADMIN_INITIAL_PASSWORD` and `SEED_ON_DEPLOY=true`, redeploy, then remove `SEED_ON_DEPLOY` (the seed is idempotent, but demo data doesn't belong in real production). Alternatively run `DATABASE_URL=<neon> npm run db:migrate && npm run db:seed` from your machine.
+   Remove `&channel_binding=require` from the Neon string if you see connection errors (the `pg` driver doesn't support it).
 5. Deploy. Feature branches/PRs automatically get Preview Deployments for owner review (use a separate Neon branch for previews).
 
 ## Security considerations
