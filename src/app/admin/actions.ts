@@ -53,10 +53,15 @@ export async function loginAction(_prev: FormState, fd: FormData): Promise<FormS
   if (!parsed.success) return { error: "Enter your username and password." };
   const key = `login:${clientIp(await headers())}`;
   if (!hit(key, 8, 15 * 60_000).allowed) return { error: "Too many sign-in attempts. Try again in a few minutes." };
-  const admin = await verifyCredentials(parsed.data.username, parsed.data.password);
-  if (!admin) return { error: "Invalid username or password." };
-  clearBucket(key);
-  await createSession(admin.id);
+  try {
+    const admin = await verifyCredentials(parsed.data.username, parsed.data.password);
+    if (!admin) return { error: "Invalid username or password." };
+    clearBucket(key);
+    await createSession(admin.id);
+  } catch (e) {
+    console.error("login failed", e instanceof Error ? e.message : "unknown");
+    return { error: "Sign-in is temporarily unavailable. Please try again." };
+  }
   redirect("/admin");
 }
 

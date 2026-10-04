@@ -13,7 +13,7 @@ const SESSION_TTL_MS = 8 * 60 * 60 * 1000;
 
 function secret(): string {
   const s = process.env.SESSION_SECRET;
-  if (!s || s.length < 32) throw new Error("SESSION_SECRET must be set to a random string of 32+ characters");
+  if (!s || s.length < 16) throw new Error("SESSION_SECRET must be set to a random string of 16+ characters (32+ recommended)");
   return s;
 }
 

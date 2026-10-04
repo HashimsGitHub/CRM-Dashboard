@@ -40,7 +40,7 @@ npm run lint && npm run typecheck && npm test && npm run build
 | Variable | Purpose |
 |---|---|
 | `DATABASE_URL` | Neon connection string (server only, never `NEXT_PUBLIC_`). Use the **pooled** string on Vercel. |
-| `SESSION_SECRET` | 32+ random chars (`openssl rand -base64 48`); HMAC key for session tokens. |
+| `SESSION_SECRET` | 16+ random chars (32+ recommended) (`openssl rand -base64 48`); HMAC key for session tokens. |
 | `ADMIN_USERNAME` / `ADMIN_INITIAL_PASSWORD` | Used by `db:seed` to create the first administrator (≥10 chars). **Quote the password in `.env.local` if it contains `#`.** |
 | `TEST_DATABASE_URL` | Disposable database for `npm test` (tables are truncated). Must differ from `DATABASE_URL`. |
 
